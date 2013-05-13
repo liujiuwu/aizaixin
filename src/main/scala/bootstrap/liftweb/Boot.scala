@@ -2,20 +2,28 @@ package bootstrap.liftweb
 
 import code.model.Item
 import code.model.MyDBVendor
-import net.liftmodules._
-import net.liftweb._
-import net.liftweb.common._
-import net.liftweb.db.DB
-import net.liftweb.db.DefaultConnectionIdentifier
-import net.liftweb.http._
-import net.liftweb.http.provider.HTTPRequest
-import net.liftweb.mapper.Schemifier
-import net.liftweb.sitemap._
-import net.liftweb.sitemap.Loc._
-import net.liftweb.util._
-import net.liftweb.util.Helpers._
-import code.model.ItemType
 import code.model.User
+import net.liftmodules.FoBo
+import net.liftweb.common.Full
+import net.liftweb.db.DB
+import net.liftweb.db.DB1.db1ToDb
+import net.liftweb.db.DefaultConnectionIdentifier
+import net.liftweb.http.Html5Properties
+import net.liftweb.http.LiftRules
+import net.liftweb.http.LiftRulesMocker.toLiftRules
+import net.liftweb.http.ParsePath
+import net.liftweb.http.Req
+import net.liftweb.http.RewriteRequest
+import net.liftweb.http.RewriteResponse
+import net.liftweb.mapper.Schemifier
+import net.liftweb.sitemap.{** => **}
+import net.liftweb.sitemap.Loc.Hidden
+import net.liftweb.sitemap.Loc.LocGroup
+import net.liftweb.sitemap.LocPath.stringToLocPath
+import net.liftweb.sitemap.Menu
+import net.liftweb.sitemap.SiteMap
+import net.liftweb.util.Vendor.valToVender
+import net.liftweb.sitemap.Loc
 
 class Boot {
   def boot {
@@ -31,7 +39,7 @@ class Boot {
     LiftRules.ajaxStart = Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
     LiftRules.ajaxEnd = Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
     LiftRules.early.append(_.setCharacterEncoding("utf-8"))
-    LiftRules.htmlProperties.default.set((r: Req) => new StarXHtmlInHtml5OutProperties(r.userAgent))
+    LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
 
     LiftRules.setSiteMapFunc(() => User.sitemapMutator(MenuInfo.sitemap))
 
